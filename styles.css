@@ -172,6 +172,12 @@ body {
     background: hsla(7, 88%, 67%, 0.02);
 }
 
+.avatar-preview.drag-over {
+    border-color: hsl(7, 88%, 67%);
+    background: hsla(7, 88%, 67%, 0.1);
+    transform: scale(1.02);
+}
+
 .avatar-preview.has-image {
     border: none;
     border-radius: 12px;
@@ -295,6 +301,18 @@ body {
     display: block;
 }
 
+/* Erro acima do campo (para demonstração) */
+.error-above {
+    color: #ef4444;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background: rgba(239, 68, 68, 0.1);
+    border-radius: 8px;
+    border-left: 4px solid #ef4444;
+}
+
 /* Botões */
 .generate-btn,
 .download-btn {
@@ -324,6 +342,48 @@ body {
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+}
+
+/* Toast Notifications */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toast {
+    background: #ef4444;
+    color: white;
+    padding: 16px 20px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    min-width: 320px;
+    font-family: 'Inconsolata', monospace;
+    font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%);
+    animation: slideIn 0.3s ease forwards;
+}
+
+.toast.success {
+    background: #22c55e;
+}
+
+.toast.warning {
+    background: hsl(7, 88%, 67%);
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    to {
+        transform: translateX(100%);
+    }
 }
 
 /* Tag da Task */
@@ -398,5 +458,44 @@ body {
     #ticketCanvas {
         max-width: 100%;
         width: 100%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    body {
+        background-image: url('./assets/images/background-tablet.png');
+    }
+    
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Estados de Acessibilidade */
+.input-group input:focus-visible,
+.generate-btn:focus-visible,
+.download-btn:focus-visible,
+.avatar-preview:focus-visible {
+    outline: 3px solid hsl(7, 88%, 67%);
+    outline-offset: 2px;
+}
+
+/* Melhorias de contraste */
+@media (prefers-contrast: high) {
+    .input-group input {
+        border-width: 3px;
+    }
+    
+    .error-message {
+        font-weight: 700;
+    }
+}
+
+/* Redução de movimento */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

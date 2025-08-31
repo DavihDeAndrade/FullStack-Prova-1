@@ -29,7 +29,13 @@
                 <div class="input-group avatar-group">
                     <label for="avatar">Upload Avatar</label>
                     <div class="avatar-upload-container" id="avatarUploadContainer">
-                        <input type="file" id="avatar" name="avatar" accept="image/jpeg,image/jpg,image/png" style="display: none;">
+                        <input 
+                            type="file" 
+                            id="avatar" 
+                            name="avatar" 
+                            accept="image/jpeg,image/jpg,image/png"
+                            style="display: none;"
+                        >
                         <div class="avatar-preview" id="avatarPreview">
                             <div class="avatar-placeholder">
                                 <img src="./assets/images/icon-upload.svg" alt="Upload icon" class="upload-icon">
@@ -44,14 +50,29 @@
                 <!-- Full Name -->
                 <div class="input-group">
                     <label for="fullName">Nome Completo</label>
-                    <input type="text" id="fullName" name="fullName" required aria-describedby="fullNameError">
+                    <input 
+                        type="text" 
+                        id="fullName" 
+                        name="fullName" 
+                        required
+                        aria-describedby="fullNameError"
+                        autocomplete="name"
+                    >
                     <div class="error-message" id="fullNameError" role="alert"></div>
                 </div>
 
                 <!-- Email Address -->
                 <div class="input-group">
                     <label for="email">Endereço de Email</label>
-                    <input type="email" id="email" name="email" placeholder="example@email.com" required aria-describedby="emailError">
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="example@email.com"
+                        required
+                        aria-describedby="emailError"
+                        autocomplete="email"
+                    >
                     <div class="error-message" id="emailError" role="alert"></div>
                 </div>
 
@@ -60,12 +81,21 @@
                     <label for="githubUsername">GitHub Username</label>
                     <div class="input-with-icon">
                         <img src="./assets/images/icon-github.svg" alt="GitHub" class="input-icon">
-                        <input type="text" id="githubUsername" name="githubUsername" placeholder="@yourusername" required aria-describedby="githubUsernameError">
+                        <input 
+                            type="text" 
+                            id="githubUsername" 
+                            name="githubUsername" 
+                            placeholder="@yourusername"
+                            required
+                            aria-describedby="githubUsernameError"
+                        >
                     </div>
                     <div class="error-message" id="githubUsernameError" role="alert"></div>
                 </div>
 
-                    <button type="submit" class="generate-btn" id="generateBtn">Enviar Meu Ticket</button>
+                    <button type="submit" class="generate-btn" id="generateBtn">
+                        Enviar Meu Ticket
+                    </button>
                 </form>
             </section>
 
@@ -75,7 +105,9 @@
                 <div class="ticket-container">
                     <canvas id="ticketCanvas" width="600" height="400"></canvas>
                 </div>
-                <button id="downloadBtn" class="download-btn" disabled>Baixar Ticket</button>
+                <button id="downloadBtn" class="download-btn" disabled>
+                    Baixar Ticket
+                </button>
             </section>
         </main>
 
@@ -87,6 +119,9 @@
             </div>
         </section>
     </div>
+
+    <!-- Toast Container para notificações -->
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
 
     <!-- Tag obrigatória da task2025 -->
     <div class="task-tag">#task2025</div>
