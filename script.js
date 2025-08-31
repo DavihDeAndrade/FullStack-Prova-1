@@ -118,8 +118,8 @@ class ConferenceTicketGenerator {
         // Atualiza preview do ticket em tempo real
         this.updateTicketPreview();
         
-        // Atualiza estado do botão
-        this.updateFormValidation();
+        // REMOVIDO: Não atualiza mais o estado do botão automaticamente
+        // this.updateFormValidation();
     }
 
     // Sistema de validação flexível (configurável para demonstração no vídeo)
@@ -148,8 +148,9 @@ class ConferenceTicketGenerator {
                 const githubResult = this.validateGitHub(value);
                 isValid = githubResult.isValid;
                 errorMessage = githubResult.message;
-                // Atualiza valor processado
-                if (githubResult.processedValue) {
+                // CORRIGIDO: Atualiza o valor do input se foi processado
+                if (githubResult.processedValue !== undefined && githubResult.processedValue !== value) {
+                    field.value = githubResult.processedValue;
                     this.formData.githubUsername = githubResult.processedValue;
                 }
                 break;
@@ -202,38 +203,56 @@ class ConferenceTicketGenerator {
         return { isValid: true, message: '' };
     }
 
-    // Validação do GitHub (configurável para demonstração no vídeo)
+    // CORRIGIDO: Validação do GitHub (configurável para demonstração no vídeo)
     validateGitHub(value) {
         if (!value.trim()) {
             return { isValid: false, message: 'Nome de usuário GitHub é obrigatório' };
         }
 
         let processedValue = value.trim();
+        let shouldUpdateField = false;
 
         if (this.validationConfig.githubValidation === 'require_at') {
             // Exige @ no início
             if (!processedValue.startsWith('@')) {
                 return { isValid: false, message: 'Nome de usuário deve começar com @' };
             }
+            // Remove @ para validação do formato
+            const usernameWithoutAt = processedValue.substring(1);
+            const usernameRegex = /^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$/;
+            if (!usernameRegex.test(usernameWithoutAt)) {
+                return { isValid: false, message: 'Digite um nome de usuário GitHub válido' };
+            }
         } else if (this.validationConfig.githubValidation === 'no_at') {
             // Remove @ se existir e não permite
             if (processedValue.startsWith('@')) {
                 processedValue = processedValue.substring(1);
+                shouldUpdateField = true;
+            }
+            // Validação do formato sem @
+            const usernameRegex = /^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$/;
+            if (!usernameRegex.test(processedValue)) {
+                return { isValid: false, message: 'Digite um nome de usuário GitHub válido' };
             }
         } else if (this.validationConfig.githubValidation === 'flexible') {
-            // Remove @ automaticamente se existir
+            // Normaliza: remove @ se existir para validação, mas mantém no display
+            let usernameForValidation = processedValue;
             if (processedValue.startsWith('@')) {
-                processedValue = processedValue.substring(1);
+                usernameForValidation = processedValue.substring(1);
             }
+            // Validação do formato
+            const usernameRegex = /^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$/;
+            if (!usernameRegex.test(usernameForValidation)) {
+                return { isValid: false, message: 'Digite um nome de usuário GitHub válido' };
+            }
+            // Mantém o valor original (com ou sem @)
         }
 
-        // Validação do formato do nome de usuário
-        const usernameRegex = /^[a-zA-Z0-9](?:[a-zA-Z0-9]|-(?=[a-zA-Z0-9])){0,38}$/;
-        if (!usernameRegex.test(processedValue)) {
-            return { isValid: false, message: 'Digite um nome de usuário GitHub válido' };
-        }
-
-        return { isValid: true, message: '', processedValue };
+        return { 
+            isValid: true, 
+            message: '', 
+            processedValue: shouldUpdateField ? processedValue : undefined
+        };
     }
 
     // Sistema flexível de exibição de erros (configurável para demonstração)
@@ -261,8 +280,10 @@ class ConferenceTicketGenerator {
     // Exibe erro inline (padrão)
     showInlineError(fieldName, message, isValid) {
         const errorElement = document.getElementById(`${fieldName}Error`);
-        errorElement.textContent = isValid ? '' : message;
-        errorElement.setAttribute('aria-live', !isValid ? 'polite' : 'off');
+        if (errorElement) {
+            errorElement.textContent = isValid ? '' : message;
+            errorElement.setAttribute('aria-live', !isValid ? 'polite' : 'off');
+        }
     }
 
     // Exibe erro acima do campo
@@ -339,7 +360,6 @@ class ConferenceTicketGenerator {
                 this.showAvatarPreview(e.target.result);
                 this.displayErrorMessage('avatar', '', true);
                 this.updateTicketPreview(); // Atualiza preview com avatar
-                this.updateFormValidation();
             };
             img.src = e.target.result;
         };
@@ -354,36 +374,39 @@ class ConferenceTicketGenerator {
         preview.setAttribute('aria-label', 'Avatar enviado com sucesso');
     }
 
-    // Atualiza validação geral do formulário
-    updateFormValidation() {
-        const isNameValid = this.validateField(document.getElementById('fullName'));
-        const isEmailValid = this.validateField(document.getElementById('email'));
-        const isGitHubValid = this.validateField(document.getElementById('githubUsername'));
+    // REMOVIDO: Método updateFormValidation que desabilitava o botão
+
+    // MODIFICADO: Handle form submission - agora valida no submit
+    handleFormSubmit(event) {
+        event.preventDefault();
+        
+        // Validação completa de todos os campos
+        const fullNameValid = this.validateField(document.getElementById('fullName'));
+        const emailValid = this.validateField(document.getElementById('email'));
+        const githubValid = this.validateField(document.getElementById('githubUsername'));
         
         const hasRequiredData = this.formData.fullName.trim() && 
                                this.formData.email.trim() && 
                                this.formData.githubUsername.trim();
-        
-        this.isFormValid = isNameValid && isEmailValid && isGitHubValid && hasRequiredData;
-        this.generateBtn.disabled = !this.isFormValid;
-    }
 
-    // Handle form submission
-    handleFormSubmit(event) {
-        event.preventDefault();
-        
-        // Validação final
-        const allFieldsValid = ['fullName', 'email', 'githubUsername'].every(fieldName => {
-            const field = document.getElementById(fieldName);
-            return this.validateField(field);
-        });
-
-        if (!allFieldsValid) {
+        // Verifica se todos os campos são válidos
+        if (!fullNameValid || !emailValid || !githubValid || !hasRequiredData) {
             this.showToast('Por favor, corrija todos os erros antes de gerar seu ticket', 'error');
+            
+            // Foca no primeiro campo com erro
+            const firstErrorField = ['fullName', 'email', 'githubUsername'].find(fieldName => {
+                const field = document.getElementById(fieldName);
+                return field.classList.contains('error') || !field.value.trim();
+            });
+            
+            if (firstErrorField) {
+                document.getElementById(firstErrorField).focus();
+            }
+            
             return;
         }
 
-        // Atualiza ticket final e mostra mensagem de sucesso
+        // Se chegou até aqui, tudo está válido
         this.updateTicketPreview();
         this.showSuccessMessage();
         this.downloadBtn.disabled = false;
@@ -517,6 +540,11 @@ class ConferenceTicketGenerator {
                 ctx.beginPath();
                 ctx.arc(ticketX + 54, ticketY + 120, 30, 0, 2 * Math.PI);
                 ctx.fill();
+                
+                ctx.fillStyle = 'hsl(0, 0%, 100%)';
+                ctx.font = '24px Inconsolata, monospace';
+                ctx.textAlign = 'center';
+                ctx.fillText('👤', ticketX + 54, ticketY + 130);
             }
             
             // Informações do participante
@@ -645,6 +673,7 @@ class ConferenceTicketGenerator {
     setNameValidation(mode) {
         this.validationConfig.nameValidation = mode; // 'first' ou 'full'
         console.log(`Nome validation changed to: ${mode}`);
+        console.log('Try typing "João" (first only) or "João Silva" (full name)');
         
         // Revalida campo se já tiver valor
         const nameField = document.getElementById('fullName');
@@ -653,15 +682,29 @@ class ConferenceTicketGenerator {
         }
     }
     
-    // Altera validação do GitHub
+    // CORRIGIDO: Altera validação do GitHub
     setGitHubValidation(mode) {
         this.validationConfig.githubValidation = mode; // 'require_at', 'no_at', 'flexible'
         console.log(`GitHub validation changed to: ${mode}`);
         
-        // Revalida campo se já tiver valor
+        const examples = {
+            'require_at': 'Must start with @ (e.g., @username)',
+            'no_at': 'Cannot have @ (automatically removed)',
+            'flexible': 'Works with or without @ (automatically normalized)'
+        };
+        console.log(`Behavior: ${examples[mode]}`);
+        
+        // Força revalidação do campo se já tiver valor
         const githubField = document.getElementById('githubUsername');
         if (githubField.value) {
-            this.validateField(githubField);
+            // Limpa erros anteriores
+            githubField.classList.remove('error', 'success');
+            this.showInlineError('githubUsername', '', true);
+            
+            // Revalida com nova configuração
+            setTimeout(() => {
+                this.validateField(githubField);
+            }, 100);
         }
     }
     
@@ -676,22 +719,100 @@ class ConferenceTicketGenerator {
             else el.textContent = ''; // Limpa erros inline
         });
     }
+
+    // ==================== MÉTODOS DE DEMONSTRAÇÃO RÁPIDA ====================
+    
+    demonstrateFirstNameValidation() {
+        console.log('=== DEMONSTRAÇÃO: Validação Primeiro Nome ===');
+        this.setNameValidation('first');
+        console.log('Now try typing "João Silva" to see the validation error');
+    }
+    
+    demonstrateFullNameValidation() {
+        console.log('=== DEMONSTRAÇÃO: Validação Nome Completo ===');
+        this.setNameValidation('full');
+        console.log('Now try typing just "João" to see the validation error');
+    }
+    
+    demonstrateGitHubValidations() {
+        console.log('=== DEMONSTRAÇÃO: Validações GitHub ===');
+        console.log('Available modes:');
+        console.log('• setGitHubValidation("require_at") - Must have @');
+        console.log('• setGitHubValidation("no_at") - Cannot have @');
+        console.log('• setGitHubValidation("flexible") - Works either way');
+    }
+    
+    demonstrateErrorModes() {
+        console.log('=== DEMONSTRAÇÃO: Modos de Exibição de Erro ===');
+        console.log('Available display modes:');
+        console.log('• setErrorDisplayMode("inline") - Below field (default)');
+        console.log('• setErrorDisplayMode("above") - Above field');
+        console.log('• setErrorDisplayMode("alert") - Browser alert');
+        console.log('• setErrorDisplayMode("toast") - Toast notification');
+    }
+
+    // Método para resetar todas as configurações
+    resetToDefaults() {
+        this.validationConfig = {
+            displayMode: 'inline',
+            nameValidation: 'full',
+            githubValidation: 'flexible'
+        };
+        console.log('All validation settings reset to defaults');
+        
+        // Limpa todos os erros
+        document.querySelectorAll('.error-message, .error-above').forEach(el => {
+            if (!el.id.includes('Error')) el.remove();
+            else el.textContent = '';
+        });
+        
+        // Remove classes de erro
+        document.querySelectorAll('input').forEach(input => {
+            input.classList.remove('error', 'success');
+        });
+    }
 }
 
-// Inicialização quando o DOM é carregado
+// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
+    // Create application instance
     window.ticketGenerator = new ConferenceTicketGenerator();
     
-    console.log('Conference Ticket Generator inicializado com sistema de validação completo!');
+    // Console help for video demonstration
+    console.log('');
+    console.log('CONFERENCE TICKET GENERATOR - FRONTEND MENTOR');
+    console.log('Challenge #task2025 - HTML/CSS/JS Puro');
     console.log('');
     console.log('MÉTODOS PARA DEMONSTRAÇÃO NO VÍDEO:');
-    console.log('• ticketGenerator.setNameValidation("first") - Apenas primeiro nome');
-    console.log('• ticketGenerator.setNameValidation("full") - Nome e sobrenome');
-    console.log('• ticketGenerator.setGitHubValidation("require_at") - Exige @');
-    console.log('• ticketGenerator.setGitHubValidation("no_at") - Não permite @');
-    console.log('• ticketGenerator.setGitHubValidation("flexible") - Aceita ambos');
-    console.log('• ticketGenerator.setErrorDisplayMode("inline") - Abaixo do campo');
-    console.log('• ticketGenerator.setErrorDisplayMode("above") - Acima do campo');
-    console.log('• ticketGenerator.setErrorDisplayMode("alert") - Alert do browser');
-    console.log('• ticketGenerator.setErrorDisplayMode("toast") - Toast notification');
+    console.log('');
+    console.log('VALIDAÇÃO DE NOME:');
+    console.log('  • ticketGenerator.setNameValidation("first")   - Apenas primeiro nome');
+    console.log('  • ticketGenerator.setNameValidation("full")    - Nome e sobrenome');
+    console.log('');
+    console.log('VALIDAÇÃO GITHUB:');
+    console.log('  • ticketGenerator.setGitHubValidation("require_at")  - Exige @');
+    console.log('  • ticketGenerator.setGitHubValidation("no_at")       - Não permite @');
+    console.log('  • ticketGenerator.setGitHubValidation("flexible")    - Aceita ambos');
+    console.log('');
+    console.log('MODO DE EXIBIÇÃO DE ERRO:');
+    console.log('  • ticketGenerator.setErrorDisplayMode("inline")  - Abaixo do campo');
+    console.log('  • ticketGenerator.setErrorDisplayMode("above")   - Acima do campo');
+    console.log('  • ticketGenerator.setErrorDisplayMode("alert")   - Alert do browser');
+    console.log('  • ticketGenerator.setErrorDisplayMode("toast")   - Toast notification');
+    console.log('');
+    console.log('DEMONSTRAÇÕES RÁPIDAS:');
+    console.log('  • ticketGenerator.demonstrateFirstNameValidation()');
+    console.log('  • ticketGenerator.demonstrateFullNameValidation()');
+    console.log('  • ticketGenerator.demonstrateGitHubValidations()');
+    console.log('  • ticketGenerator.demonstrateErrorModes()');
+    console.log('');
+    console.log('RESET: ticketGenerator.resetToDefaults()');
+    console.log('');
+    console.log('MUDANÇAS:');
+    console.log('✓ Botão "Enviar Meu Ticket" sempre habilitado');
+    console.log('✓ Validação ocorre apenas no submit');
+    console.log('✓ Validação GitHub corrigida - testa todos os modos!');
+    console.log('');
+    console.log('Aplicação inicializada com assets oficiais do Frontend Mentor!');
+    console.log('Estrutura esperada: ./assets/images/ e ./assets/fonts/');
 });

@@ -1,4 +1,55 @@
-/* Reset e configurações base usando assets oficiais do Frontend Mentor */
+/* Seção do Ticket Gerado */
+.ticket-section {
+    max-width: 900px;
+    margin: 60px auto 0;
+    text-align: center;
+}
+
+.success-message {
+    margin-bottom: 40px;
+}
+
+.success-message h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: hsl(0, 0%, 100%);
+    margin-bottom: 16px;
+    line-height: 1.2;
+}
+
+.success-message h2 span {
+    background: linear-gradient(135deg, hsl(7, 86%, 67%) 0%, hsl(0, 0%, 100%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.success-message p {
+    font-size: 1.1rem;
+    color: hsl(245, 15%, 58%);
+    line-height: 1.5;
+}
+
+.success-message span {
+    color: hsl(7, 88%, 67%);
+    font-weight: 700;
+}
+
+.ticket-container {
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+}
+
+#ticketCanvas {
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    max-width: 100%;
+    height: auto;
+}/* Formulário */
+.ticket-form {
+    text-align: left;
+}/* Reset e configurações base usando assets oficiais do Frontend Mentor */
 * {
     margin: 0;
     padding: 0;
@@ -172,12 +223,6 @@ body {
     background: hsla(7, 88%, 67%, 0.02);
 }
 
-.avatar-preview.drag-over {
-    border-color: hsl(7, 88%, 67%);
-    background: hsla(7, 88%, 67%, 0.1);
-    transform: scale(1.02);
-}
-
 .avatar-preview.has-image {
     border: none;
     border-radius: 12px;
@@ -301,18 +346,6 @@ body {
     display: block;
 }
 
-/* Erro acima do campo (para demonstração) */
-.error-above {
-    color: #ef4444;
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 8px;
-    padding: 8px 12px;
-    background: rgba(239, 68, 68, 0.1);
-    border-radius: 8px;
-    border-left: 4px solid #ef4444;
-}
-
 /* Botões */
 .generate-btn,
 .download-btn {
@@ -342,6 +375,56 @@ body {
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
+}
+
+/* Seção do Ticket Gerado */
+.ticket-section {
+    max-width: 900px;
+    margin: 60px auto 0;
+    text-align: center;
+}
+
+.success-message {
+    margin-bottom: 40px;
+}
+
+.success-message h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: hsl(0, 0%, 100%);
+    margin-bottom: 16px;
+    line-height: 1.2;
+}
+
+.success-message h2 span {
+    background: linear-gradient(135deg, hsl(7, 86%, 67%) 0%, hsl(0, 0%, 100%) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.success-message p {
+    font-size: 1.1rem;
+    color: hsl(245, 15%, 58%);
+    line-height: 1.5;
+}
+
+.success-message span {
+    color: hsl(7, 88%, 67%);
+    font-weight: 700;
+}
+
+.ticket-container {
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+}
+
+#ticketCanvas {
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    max-width: 100%;
+    height: auto;
 }
 
 /* Toast Notifications */
