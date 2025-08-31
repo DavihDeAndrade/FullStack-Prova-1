@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <title>Frontend Mentor | Conference ticket generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <img src="./assets/images/logo-full.svg" alt="Logo da Coding Conf" class="logo">
+            <h1>Sua Jornada para a Coding Conf 2025 Começa Aqui!</h1>
+            <p>Garante seu lugar na maior conferência de programação do ano.</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Form Section -->
+            <section class="form-section">
+                <h2>Complete Your Information</h2>
+                <form id="ticketForm" class="ticket-form">
+                    <!-- Upload Avatar -->
+                    <div class="input-group">
+                        <label for="avatar">Upload Avatar</label>
+                        <input type="file" id="avatar" name="avatar" accept="image/*">
+                        <p class="input-hint">Envie sua foto (JPG or PNG, Tamanho Máximo: 500KB).</p>
+                    </div>
+
+                    <!-- Full Name -->
+                    <div class="input-group">
+                        <label for="fullName">Nome Completo</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+
+                    <!-- Email Address -->
+                    <div class="input-group">
+                        <label for="email">Endereço de Email</label>
+                        <input type="email" id="email" name="email" placeholder="example@email.com" required>
+                    </div>
+
+                    <!-- GitHub Username -->
+                    <div class="input-group">
+                        <label for="githubUsername">GitHub Username</label>
+                        <input type="text" id="githubUsername" name="githubUsername" placeholder="@yourusername" required>
+                    </div>
+
+                    <button type="submit" class="generate-btn">Enviar Meu Ticket</button>
+                </form>
+            </section>
+
+            <!-- Ticket Preview Section -->
+            <section class="ticket-preview-section">
+                <h2>Ticket Preview</h2>
+                <div class="ticket-container">
+                    <div class="ticket-placeholder">
+                        <p>Complete o formulário para ver o preview do ticket</p>
+                    </div>
+                </div>
+                <button class="download-btn" disabled>Baixar Ticket</button>
+            </section>
+        </main>
+    </div>
+
+    <!-- Tag obrigatória da task2025 -->
+    <div class="task-tag">#task2025</div>
+    
+    <script src="script.js"></script>
+</body>
+</html>

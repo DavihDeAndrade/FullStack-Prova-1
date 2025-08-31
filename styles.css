@@ -1,0 +1,182 @@
+/* Reset e configurações base usando assets oficiais do Frontend Mentor */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inconsolata', monospace;
+    font-size: 20px;
+    background-color: hsl(248, 70%, 10%);
+    background-image: url('./assets/images/background-desktop.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    min-height: 100vh;
+    color: hsl(0, 0%, 100%);
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Header centralizado */
+.header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.logo {
+    width: 180px;
+    height: auto;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: hsl(0, 0%, 100%);
+    margin-bottom: 20px;
+}
+
+.header p {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: hsl(245, 15%, 58%);
+}
+
+/* Layout principal - lado a lado */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+/* Form Section */
+.form-section {
+    background: hsl(0, 0%, 100%);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.form-section h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: hsl(245, 19%, 35%);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 30px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: hsl(245, 19%, 35%);
+    margin-bottom: 10px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 16px 20px;
+    border: 2px solid hsl(252, 6%, 83%);
+    border-radius: 12px;
+    font-family: 'Inconsolata', monospace;
+    font-size: 18px;
+    color: hsl(245, 19%, 35%);
+    background: hsl(0, 0%, 100%);
+}
+
+.input-group input::placeholder {
+    color: hsl(245, 15%, 58%);
+}
+
+.input-hint {
+    font-size: 12px;
+    color: hsl(245, 15%, 58%);
+    margin-top: 6px;
+}
+
+/* Ticket Preview Section */
+.ticket-preview-section {
+    background: hsl(0, 0%, 100%);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.ticket-preview-section h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: hsl(245, 19%, 35%);
+    margin-bottom: 30px;
+}
+
+.ticket-container {
+    margin: 20px 0;
+}
+
+.ticket-placeholder {
+    border: 2px dashed hsl(252, 6%, 83%);
+    border-radius: 12px;
+    padding: 60px 20px;
+    color: hsl(245, 15%, 58%);
+    background: hsl(0, 0%, 98%);
+}
+
+/* Botões */
+.generate-btn,
+.download-btn {
+    width: 100%;
+    padding: 18px 24px;
+    background: hsl(7, 88%, 67%);
+    color: hsl(0, 0%, 100%);
+    border: none;
+    border-radius: 12px;
+    font-family: 'Inconsolata', monospace;
+    font-size: 20px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.generate-btn:disabled,
+.download-btn:disabled {
+    background: hsl(245, 15%, 58%);
+    cursor: not-allowed;
+}
+
+/* Tag da Task */
+.task-tag {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: rgba(0, 0, 0, 0.8);
+    color: hsl(7, 88%, 67%);
+    padding: 12px 20px;
+    border-radius: 24px;
+    font-family: 'Inconsolata', monospace;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* Responsividade básica */
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    body {
+        background-image: url('./assets/images/background-mobile.png');
+        font-size: 18px;
+    }
+}
