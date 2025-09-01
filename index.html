@@ -23,11 +23,10 @@
         <main class="main-content">
             <!-- Form Section -->
             <section class="form-section">
-                <h2>Complete Your Information</h2>
+                <h2>Insira seus dados</h2>
                 <form id="ticketForm" class="ticket-form" novalidate>
                 <!-- Upload Avatar -->
                 <div class="input-group avatar-group">
-                    <label for="avatar">Upload Avatar</label>
                     <div class="avatar-upload-container" id="avatarUploadContainer">
                         <input 
                             type="file" 
@@ -54,6 +53,7 @@
                         type="text" 
                         id="fullName" 
                         name="fullName" 
+                        placeholder="Nome Sobrenome"
                         required
                         aria-describedby="fullNameError"
                         autocomplete="name"
@@ -68,7 +68,7 @@
                         type="email" 
                         id="email" 
                         name="email" 
-                        placeholder="example@email.com"
+                        placeholder="examplo@email.com"
                         required
                         aria-describedby="emailError"
                         autocomplete="email"
@@ -85,7 +85,7 @@
                             type="text" 
                             id="githubUsername" 
                             name="githubUsername" 
-                            placeholder="@yourusername"
+                            placeholder="@GithubUsername"
                             required
                             aria-describedby="githubUsernameError"
                         >
@@ -101,7 +101,7 @@
 
             <!-- Ticket Preview Section -->
             <section class="ticket-preview-section">
-                <h2>Ticket Preview</h2>
+                <h2>Pré visualização do Ticket</h2>
                 <div class="ticket-container">
                     <canvas id="ticketCanvas" width="600" height="400"></canvas>
                 </div>
